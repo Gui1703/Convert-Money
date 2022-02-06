@@ -1,15 +1,23 @@
 const button = document.getElementById("convert-button");
 const select = document.getElementById("currency-select");
-const dolar = 5.4; // Valor do Dólar 25/01/2022
-const euro = 6.1; // Valor do Euro 25/01/2022
+
 const bitcoin = 201120.54; // Valor do Bitcoin 25/01/2022
 const PA = 0.052; // Valor do Peso Argentino 25/01/2022
 
 // Função de Converter Moedas
-const convertValues = () => {
+const convertValues = async () => {
   const inputReais = document.getElementById("input-real").value; // Valor do input
   const realValueText = document.getElementById("real-value-text"); // Valor em Real
   const currencyValueText = document.getElementById("currency-value-text"); // Valor em Dólar
+
+  // API de cotação das moedas
+  const data = await fetch(
+    "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL"
+  ).then((response) => response.json());
+
+  const dolar = data.USDBRL.high; // Tempo real do valor do Dolar
+
+  const euro = data.EURBRL.high; // Tempo real do valor do Euro
 
   // Formatação do dinheiro em Real
   realValueText.innerHTML = new Intl.NumberFormat("pt-BR", {
